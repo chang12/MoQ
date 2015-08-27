@@ -1,0 +1,3 @@
+<h2>{{ group.name }} made by {{ group.owner }}</h2>
+<a href={% url 'blog:group_edit' group.pk %}>수정</a>
+<a href={% url 'blog:group_delete' group.pk %}>삭제</a>
