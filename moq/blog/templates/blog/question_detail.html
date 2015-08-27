@@ -2,9 +2,17 @@
 <hr/>
 {{ question.content }}
 <hr/>
-{% comment %}
-    <a href={% url 'blog:answer_new' group.pk question.pk %}>
-{% endcomment %}<h2>답변+</h2></a>
+<ul>
+{% for answer in answer_list %}
+    <li><a href={% url 'blog:answer_detail' group.pk question.pk answer.pk %}><h2>{{answer.content}}</h2></a></li>
+{% empty %}
+    <h2>No answer at all.</h2>
+{% endfor %}
+</ul>
+<hr/>
+<a href={% url 'blog:answer_new' group.pk question.pk %}><h2>답변+</h2></a>
 <hr/>
 <a href={% url 'blog:question_edit' group.pk question.pk %}>수정</a>
 <a href={% url 'blog:question_delete' group.pk question.pk %}>삭제</a>
+<hr/>
+<a href={% url 'blog:group_detail' group.pk %}>그룹으로</a>

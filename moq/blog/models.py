@@ -18,3 +18,11 @@ class Question(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Answer(models.Model):
+    author = models.ForeignKey(User)
+    question = models.ForeignKey(Question)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

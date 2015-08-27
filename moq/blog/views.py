@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from blog.forms import GroupForm, QuestionForm
-from blog.models import Group, Question
+from blog.forms import GroupForm, QuestionForm, AnswerForm
+from blog.models import Group, Question, Answer
 
 # Create your views here.
 
@@ -80,9 +80,11 @@ def group_delete(request, pk):
 def question_detail(request, group_pk, question_pk):
     group = get_object_or_404(Group, pk=group_pk)
     question = get_object_or_404(Question, pk=question_pk)
+    answer_list = question.answer_set.all()
     return render(request, 'blog/question_detail.html', {
         'group': group,
         'question': question,
+        'answer_list': answer_list,
     })
 
 
@@ -141,4 +143,68 @@ def question_delete(request, group_pk, question_pk):
         })
 
 
+@login_required
+def answer_detail(request, group_pk, question_pk, answer_pk):
+    group = get_object_or_404(Group, pk=group_pk)
+    question = get_object_or_404(Question, pk=question_pk)
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    return render(request, 'blog/answer_detail.html', {
+        'group': group,
+        'question': question,
+        'answer': answer,
+    })
 
+
+@login_required
+def answer_new(request, group_pk, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.author = request.user
+            answer.question = question
+            answer.save()
+            return redirect('blog:question_detail', group_pk, question_pk)
+
+    else:
+        form = AnswerForm()
+
+    return render(request, 'blog/form.html', {
+        'form': form,
+    })
+
+
+@login_required
+def answer_edit(request, group_pk, question_pk, answer_pk):
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    if answer.author == request.user:
+        if request.method == 'POST':
+            form = AnswerForm(request.POST, instance=answer)
+            if form.is_valid():
+                form.save()
+                return redirect('blog:answer_detail', group_pk, question_pk, answer_pk)
+        else:
+            form = AnswerForm(instance=answer)
+        return render(request, 'blog/form.html', {
+            'form': form,
+        })
+
+    else:
+        content = '해당 답변의 작성자가 아닙니다.'
+        return render(request, 'blog/error.html', {
+            'content': content,
+        })
+
+
+@login_required
+def answer_delete(request, group_pk, question_pk, answer_pk):
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    if answer.author == request.user:
+        answer.delete()
+        return redirect('blog:question_detail', group_pk, question_pk)
+    else:
+        content = '해당 답변의 작성자가 아닙니다.'
+        return render(request, 'blog/error.html', {
+            'content': content,
+        })

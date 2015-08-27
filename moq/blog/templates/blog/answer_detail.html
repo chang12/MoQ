@@ -1,0 +1,5 @@
+<h1>{{ answer.content }}</h1>
+<hr/>
+<a href={% url 'blog:answer_edit' group.pk question.pk answer.pk %}>수정</a>
+<a href={% url 'blog:answer_delete' group.pk question.pk answer.pk %}>삭제</a>
+<a href={% url 'blog:question_detail' group.pk question.pk %}>질문으로</a>
