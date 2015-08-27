@@ -1,0 +1,12 @@
+{% extends "blog/layout.html" %}
+
+{% block content %}
+    <h1>그룹 목록</h1>
+    <ul>
+        {% for group in group_list %}
+            <li><a href={% url 'blog:group_detail' group.pk %}>{{group.name}}</a></li>
+        {% empty %}
+            등록된 그룹이 없습니다
+        {% endfor %}
+    </ul>
+{% endblock %}

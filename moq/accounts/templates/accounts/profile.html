@@ -1,0 +1,24 @@
+{% extends 'blog/layout.html' %}
+
+{% block content %}
+    <h2>{{ user }}'s Profile Page</h2>
+    <hr/>
+    <h3>내가 만든 그룹</h3>
+        {% for group in group_list %}
+            <a href={% url 'blog:group_detail' group.pk %}><li>{{ group.name }}</li></a>
+        {% empty %}
+            <li>만든 그룹이 없습니다.</li>
+        {% endfor %}
+    <h3>내가 물어본 질문</h3>
+        {% for question in question_list %}
+            <a href={% url 'blog:question_detail' question.group.pk question.pk %}><li>{{ question.title }}</li></a>
+        {% empty %}
+            <li>물어본 질문이 없습니다.</li>
+        {% endfor %}
+    <h3>내가 답해준 답변</h3>
+        {% for answer in answer_list %}
+            <li>{{ answer.content }}</li>
+        {% empty %}
+            <li>답해준 답변이 없습니다.</li>
+        {% endfor %}
+{% endblock %}

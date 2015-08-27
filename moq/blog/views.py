@@ -7,14 +7,18 @@ from blog.models import Group, Question, Answer
 
 
 def index(request):
+    return render(request, 'blog/index.html')
+
+
+def group_list(request):
     group_list = Group.objects.all()
-    return render(request, 'blog/index.html', {
+    return render(request, 'blog/group_list.html', {
         'group_list': group_list,
     })
 
 
-def group_detail(request, pk):
-    group = get_object_or_404(Group, pk=pk)
+def group_detail(request, group_pk):
+    group = get_object_or_404(Group, pk=group_pk)
     question_list = group.question_set.all()
     return render(request, 'blog/group_detail.html', {
         'group': group,
@@ -41,14 +45,14 @@ def group_new(request):
 
 
 @login_required
-def group_edit(request, pk):
-    group = get_object_or_404(Group, pk=pk)
+def group_edit(request, group_pk):
+    group = get_object_or_404(Group, pk=group_pk)
     if request.user == group.owner:
         if request.method == 'POST':
             form = GroupForm(request.POST, instance=group)
             if form.is_valid():
                 form.save()
-                return redirect('blog:group_detail', pk)
+                return redirect('blog:group_detail', group_pk)
 
         else:
             form = GroupForm(instance=group)
@@ -65,8 +69,8 @@ def group_edit(request, pk):
 
 
 @login_required
-def group_delete(request, pk):
-    group = get_object_or_404(Group, pk=pk)
+def group_delete(request, group_pk):
+    group = get_object_or_404(Group, pk=group_pk)
     if request.user == group.owner:
         group.delete()
         return redirect('blog:index')
@@ -77,6 +81,7 @@ def group_delete(request, pk):
         })
 
 
+@login_required
 def question_detail(request, group_pk, question_pk):
     group = get_object_or_404(Group, pk=group_pk)
     question = get_object_or_404(Question, pk=question_pk)
@@ -143,16 +148,16 @@ def question_delete(request, group_pk, question_pk):
         })
 
 
-@login_required
-def answer_detail(request, group_pk, question_pk, answer_pk):
-    group = get_object_or_404(Group, pk=group_pk)
-    question = get_object_or_404(Question, pk=question_pk)
-    answer = get_object_or_404(Answer, pk=answer_pk)
-    return render(request, 'blog/answer_detail.html', {
-        'group': group,
-        'question': question,
-        'answer': answer,
-    })
+# @login_required
+# def answer_detail(request, group_pk, question_pk, answer_pk):
+#     group = get_object_or_404(Group, pk=group_pk)
+#     question = get_object_or_404(Question, pk=question_pk)
+#     answer = get_object_or_404(Answer, pk=answer_pk)
+#     return render(request, 'blog/answer_detail.html', {
+#         'group': group,
+#         'question': question,
+#         'answer': answer,
+#     })
 
 
 @login_required

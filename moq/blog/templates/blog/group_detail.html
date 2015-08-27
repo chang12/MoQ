@@ -1,14 +1,15 @@
-<h2>{{ group.name }} made by {{ group.owner }}</h2>
+{% extends 'blog/layout.html'%}
+
+{% block content %}
+<h2>{{ group.name }} ({{ group.owner }})</h2>
+<a href={% url 'blog:group_edit' group.pk %}>수정</a>
+<a href={% url 'blog:group_delete' group.pk %}>삭제</a>
 <ul>
     {% for question in question_list %}
         <li><a href={% url 'blog:question_detail' group.pk question.pk %}><h3>{{ question.title }}</h3></a></li>
     {% empty %}
-        <h3>No question at all.</h3>
+        <li>등록된 질문이 없습니다.</li>
     {% endfor %}
+        <li><a href={% url 'blog:question_new' group.pk %}>질문+</a></li>
 </ul>
-
-<a href={% url 'blog:question_new' group.pk %}><h3>질문+</h3></a>
-<a href={% url 'blog:group_edit' group.pk %}>수정</a>
-<a href={% url 'blog:group_delete' group.pk %}>삭제</a>
-<hr/>
-<a href={% url 'blog:index' %}>메인으로</a>
+{% endblock %}
