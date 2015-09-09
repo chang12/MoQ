@@ -1,0 +1,75 @@
+{% extends "blog/base.html" %}
+{% load staticfiles%}
+
+{% block content %}
+
+
+<section class="container content-section text-center">
+    <div>
+        <h2>클래스 목록</h2>
+        <p>현재 등록되어 있는 모든 클래스들의 리스트입니다</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading" style="display: inline; float: left;">Group Title / Professor</h4>
+                    <h4 class="list-group-item-heading" style="float: right;">Follow</h4>
+                    <p class="list-group-item-text" style="text-align: left; clear: both;">Group Title / Professor</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-2">
+            <div class="list-group">
+                <div class="list-group-item" style="color: black;">
+                    <h4 class="list-group-item-heading" style="text-align: left;">Group Title / Professor</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-lg-offset-8">
+            <div class="list-group">
+                <div class="list-group-item" style="color: black;">
+                    <h4 class="list-group-item-heading" style="text-align: right;">Follow</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-group">
+        <div class="list-group-item" style="color: black;">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-2">
+                    <h4 class="list-group-item-heading" style="text-align: left;">Group Title / Professor</h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="list-group">
+        <div class="list-group-item" style="color: black;">
+            <h4>연습</h4>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4 class="list-group-item-heading" style="text-align: left; color: black;">Group Title / Professor</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 class="list-group-item-heading" style="text-align: right; color: black;">Second</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

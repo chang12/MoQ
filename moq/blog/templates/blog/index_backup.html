@@ -1,0 +1,13 @@
+{% extends "blog/layout.html" %}
+
+{% block content %}
+<div style="text-align: center;">
+    <strong style="font-size: 120px;">모:큐</strong>
+    <p>역사상 훌륭한 발견, 위대한 업적들은 모두 어떤 질문으로부터 시작했습니다.</p>
+    <p>세상 모든 질문과 답변을 모은 모:큐에서 여러분의 역사를 시작하세요.</p>
+</div>
+<div style="text-align: center; margin: 60px;">
+    <a href={% url 'blog:group_new' %}>그룹추가</a>
+    <a href={% url 'blog:group_list' %}>그룹찾기</a>
+</div>
+{% endblock %}

@@ -27,6 +27,20 @@ def group_detail(request, group_pk):
 
 
 @login_required
+def group_like(request, group_pk):
+    group = get_object_or_404(Group, pk=group_pk)
+    group.likes.add(request.user)
+    return redirect('blog:group_detail', group_pk)
+
+
+@login_required
+def group_unlike(request, group_pk):
+    group = get_object_or_404(Group, pk=group_pk)
+    group.likes.remove(request.user)
+    return redirect('blog:group_detail', group_pk)
+
+
+@login_required
 def group_new(request):
     if request.method == "POST":
         form = GroupForm(request.POST)
@@ -34,7 +48,7 @@ def group_new(request):
             group = form.save(commit=False)
             group.owner = request.user
             group.save()
-            return redirect('blog:index')
+            return redirect('blog:group_list')
 
     else:
         form = GroupForm()
@@ -73,7 +87,7 @@ def group_delete(request, group_pk):
     group = get_object_or_404(Group, pk=group_pk)
     if request.user == group.owner:
         group.delete()
-        return redirect('blog:index')
+        return redirect('blog:group_list')
     else:
         content = '해당 그룹의 소유자만 삭제할 수 있습니다'
         return render(request, 'blog/error.html', {
@@ -94,6 +108,20 @@ def question_detail(request, group_pk, question_pk):
 
 
 @login_required
+def question_like(request, group_pk, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    question.likes.add(request.user)
+    return redirect('blog:question_detail', group_pk, question_pk)
+
+
+@login_required
+def question_unlike(request, group_pk, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    question.likes.remove(request.user)
+    return redirect('blog:question_detail', group_pk, question_pk)
+
+
+@login_required
 def question_new(request, group_pk):
     group = get_object_or_404(Group, pk=group_pk)
     if request.method == 'POST':
@@ -111,6 +139,20 @@ def question_new(request, group_pk):
     return render(request, 'blog/form.html', {
         'form': form,
     })
+
+
+@login_required
+def answer_like(request, group_pk, question_pk, answer_pk):
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    answer.likes.add(request.user)
+    return redirect('blog:question_detail', group_pk, question_pk)
+
+
+@login_required
+def answer_unlike(request, group_pk, question_pk, answer_pk):
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    answer.likes.remove(request.user)
+    return redirect('blog:question_detail', group_pk, question_pk)
 
 
 @login_required
@@ -213,3 +255,7 @@ def answer_delete(request, group_pk, question_pk, answer_pk):
         return render(request, 'blog/error.html', {
             'content': content,
         })
+
+
+def practice(request):
+    return render(request, 'blog/practice.html')

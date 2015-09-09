@@ -1,7 +1,29 @@
-<form action="" method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit"/>
-</form>
+{% extends "blog/base.html" %}
+{% load bootstrap3 staticfiles %}
+
+{% block content %}
+    <section class="container content-section text-center">
+        <h2>새로운 클래스 생성</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+
+            <div style="width:30%; margin: auto;">
+            {% bootstrap_form form layout="inline"%}
+            </div>
+
+            {% buttons %}
+                <button type="submit" class="btn btn-default btn-lg">
+                    {% bootstrap_icon "star" %} Submit
+                </button>
+            {% endbuttons %}
+
+        </form>
+    </section>
+{% endblock content %}
+
+{% block script %}
+    <script>
+        $("li .page-scroll").remove()
+    </script>
+{% endblock script %}

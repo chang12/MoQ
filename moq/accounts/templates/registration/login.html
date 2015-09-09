@@ -1,10 +1,29 @@
-{% extends 'blog/layout.html' %}
+{% extends "blog/base.html" %}
+{% load bootstrap3 staticfiles %}
+
 {% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit"/>
-    </form>
-{% endblock %}
+    <section class="container content-section text-center">
+        <h2>먼저 로그인 해주세요</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+
+            <div style="width:30%; margin: auto;">
+            {% bootstrap_form form layout="inline"%}
+            </div>
+
+            {% buttons %}
+                <button type="submit" class="btn btn-default btn-lg">
+                    Login
+                </button>
+            {% endbuttons %}
+
+        </form>
+    </section>
+{% endblock content %}
+
+{% block script %}
+    <script>
+        $("li .page-scroll").remove()
+    </script>
+{% endblock script %}

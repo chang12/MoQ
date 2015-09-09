@@ -1,15 +1,26 @@
-{% extends 'blog/layout.html'%}
+{% extends 'blog/base.html'%}
 
 {% block content %}
-<h2>{{ group.name }} ({{ group.owner }})</h2>
-<a href={% url 'blog:group_edit' group.pk %}>수정</a>
-<a href={% url 'blog:group_delete' group.pk %}>삭제</a>
-<ul>
-    {% for question in question_list %}
-        <li><a href={% url 'blog:question_detail' group.pk question.pk %}><h3>{{ question.title }}</h3></a></li>
-    {% empty %}
-        <li>등록된 질문이 없습니다.</li>
-    {% endfor %}
-        <li><a href={% url 'blog:question_new' group.pk %}>질문+</a></li>
-</ul>
+
+<section class="container content-section text-center">
+    <h2 style="text-align: left;">{{ group.name }}  ★ {{ group.likes.count }}</h2>
+    <p style="text-align: left;">{{ group.owner }}</p>
+    <a href="{% url 'blog:group_edit' group.pk %}">수정</a>
+    <a href="{% url 'blog:group_delete' group.pk %}">삭제</a>
+    {% if user not in group.likes.all %}
+        <a href="{% url 'blog:group_like' group.pk %}">좋아요</a>
+    {% else %}
+        <a href="{% url 'blog:group_unlike' group.pk %}">좋아요 취소</a>
+    {% endif %}
+
+    <ul>
+        {% for question in question_list %}
+            <li><a href={% url 'blog:question_detail' group.pk question.pk %}><h3>{{ question.title }}</h3></a></li>
+        {% empty %}
+            <li>등록된 질문이 없습니다.</li>
+        {% endfor %}
+            <li><a href={% url 'blog:question_new' group.pk %}>질문+</a></li>
+    </ul>
+</section>
+
 {% endblock %}

@@ -5,16 +5,16 @@ from blog.models import Group, Question, Answer
 class GroupForm(ModelForm):
     class Meta:
         model = Group
-        exclude = ('owner', )
+        exclude = ('owner', 'likes', )
 
 
 class QuestionForm(ModelForm):
     class Meta:
         model = Question
-        exclude = ('author', 'group', )
+        exclude = ('author', 'group', 'likes', )
 
 
 class AnswerForm(ModelForm):
     class Meta:
         model = Answer
-        exclude = ('author', 'question', )
+        exclude = ('author', 'question', 'likes', )
