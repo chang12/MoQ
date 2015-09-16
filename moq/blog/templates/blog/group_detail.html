@@ -1,26 +1,72 @@
 {% extends 'blog/base.html'%}
 
 {% block content %}
+<section class="container content-section">
+    <div class="row">
+        <div class="col-lg-4" style="text-align: center;">
+            <h2>{{ group.name }}</h2>
+        </div>
+        <div class="col-lg-4" style="text-align: center;">
+            <h2>{{ group.owner }}</h2>
+        </div>
+        <div class="col-lg-4" style="text-align: center;">
+            <h2><span class="glyphicon glyphicon-user"></span> {{ group.likes.count }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4" style="text-align: center;">
+            {% if user == group.owner %}
+            <h2><a href="{% url 'blog:group_edit' group.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></h2>
+            {% endif %}
+        </div>
+        <div class="col-lg-4" style="text-align: center;">
+        </div>
+        <div class="col-lg-4" style="text-align: center;">
+            {% if user not in group.likes.all %}
+            <h2><a href="{% url 'blog:group_like' group.pk %}">좋아요</a></h2>
+            {% else %}
+            <h2><a href="{% url 'blog:group_unlike' group.pk %}">좋아요 취소</a></h2>
+            {% endif %}
+        </div>
+    </div>
 
-<section class="container content-section text-center">
-    <h2 style="text-align: left;">{{ group.name }}  ★ {{ group.likes.count }}</h2>
-    <p style="text-align: left;">{{ group.owner }}</p>
-    <a href="{% url 'blog:group_edit' group.pk %}">수정</a>
-    <a href="{% url 'blog:group_delete' group.pk %}">삭제</a>
-    {% if user not in group.likes.all %}
-        <a href="{% url 'blog:group_like' group.pk %}">좋아요</a>
-    {% else %}
-        <a href="{% url 'blog:group_unlike' group.pk %}">좋아요 취소</a>
-    {% endif %}
+    {% for question in question_list %}
+    <a href="{% url "blog:question_detail" group.pk question.pk %}">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="font-size: 20px;">
+                <div class="row">
+                    <div class="col-lg-6"><strong>{{question.title}}</strong></div>
+                    <div class="col-lg-2">{% if question.author == user %}<a href="{% url "blog:question_edit" group.pk question.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>{% endif %}</div>
+                    <div class="col-lg-2">{% if question.author == user %}<a href="{% url "blog:question_delete" group.pk question.pk %}"><span class="glyphicon glyphicon-remove"></span></a>{% endif %}</div>
+                    <div class="col-lg-2"><a href="{% url "blog:answer_new" group.pk question.pk %}">답변달기</a></div>
+                </div>
+            </div>
+            <div class="panel-body" style="color: black;">{{question.content}}</div>
+        </div>
+    </a>
+    {% empty %}
+    <div class="panel panel-default">
+        <div class="panel-body" style="color: black;">등록된 질문이 없습니다.</div>
+    </div>
+    {% endfor %}
 
-    <ul>
-        {% for question in question_list %}
-            <li><a href={% url 'blog:question_detail' group.pk question.pk %}><h3>{{ question.title }}</h3></a></li>
-        {% empty %}
-            <li>등록된 질문이 없습니다.</li>
-        {% endfor %}
-            <li><a href={% url 'blog:question_new' group.pk %}>질문+</a></li>
-    </ul>
+    <div class="text-center">
+        <a href="{% url 'blog:question_new' group.pk %}" class="btn btn-default btn-lg" style="margin: 20px;">질문 작성</a>
+        <a href="{% url 'blog:group_list' %}" class="btn btn-default btn-lg">그룹 목록</a>
+    </div>
+
+
+
+
+
 </section>
-
 {% endblock %}
+
+
+{% block script %}
+    <script>
+        $("li .page-scroll").remove()
+    </script>
+{% endblock script %}
+
+

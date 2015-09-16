@@ -14,10 +14,6 @@
                     <a href="{% url "blog:group_detail" group.pk %}" class="list-group-item">
                         <h4 class="list-group-item-heading" style="display: inline; float: left;">
                             {{ group.name }} / {{ group.owner }}
-                            {% if user == group.owner %}
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            {% else %}
-                            {% endif %}
                         </h4>
                         <h4 class="list-group-item-heading" style="float: right;"><span class="glyphicon glyphicon-user"></span> {{ group.likes.count }}</h4>
                         <p class="list-group-item-text" style="text-align: left; clear: both;">{{ group.university }} / {{ group.semester }}</p>

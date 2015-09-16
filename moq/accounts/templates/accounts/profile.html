@@ -1,28 +1,93 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h2>{{ user }}'s Profile Page</h2>
-    <hr/>
-    <h3>내가 만든 그룹</h3>
-        {% for group in user.group_owner.all %}
-            <a href={% url 'blog:group_detail' group.pk %}><li>{{ group.name }}</li></a>
-        {% empty %}
-            <li>만든 그룹이 없습니다.</li>
-        {% endfor %}
-    <h3>내가 물어본 질문</h3>
-        {% for question in user.question_author.all %}
-            <a href={% url 'blog:question_detail' question.group.pk question.pk %}><li>{{ question.title }}</li></a>
-        {% empty %}
-            <li>물어본 질문이 없습니다.</li>
-        {% endfor %}
-    <h3>내가 답해준 답변</h3>
-        {% for answer in user.answer_author.all %}
-            <li>{{ answer.content }}</li>
-        {% empty %}
-            <li>답해준 답변이 없습니다.</li>
-        {% endfor %}
-    <hr/>
-    <h3>내가 좋아하는 그룹</h3>
+<section class="container content-section">
+
+    <h2>My Groups</h2>
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            {% for group in user.group_owner.all %}
+            <div class="list-group">
+                <a href="{% url "blog:group_detail" group.pk %}" class="list-group-item">
+                    <h4 class="list-group-item-heading" style="display: inline; float: left;">
+                        {{ group.name }} / {{ group.owner }}
+                    </h4>
+                    <h4 class="list-group-item-heading" style="float: right;"><span class="glyphicon glyphicon-user"></span> {{ group.likes.count }}</h4>
+                    <p class="list-group-item-text" style="text-align: left; clear: both;">{{ group.university }} / {{ group.semester }}</p>
+                </a>
+            </div>
+            {% empty %}
+            <h2> 아직 등록된 그룹이 없네요! </h2>
+            {% endfor %}
+        </div>
+    </div>
+
+    <p></p><p></p>
+
+    <h2>My Questions</h2>
+
+    {% for question in user.question_author.all %}
+    <a href="{% url "blog:question_detail" question.group.pk question.pk %}">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="font-size: 20px;">
+                <div class="row">
+                    <div class="col-lg-6"><strong>{{question.title}}</strong></div>
+                    <div class="col-lg-2">{% if question.author == user %}<a href="{% url "blog:question_edit" question.group.pk question.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>{% endif %}</div>
+                    <div class="col-lg-2">{% if question.author == user %}<a href="{% url "blog:question_delete" question.group.pk question.pk %}"><span class="glyphicon glyphicon-remove"></span></a>{% endif %}</div>
+                    <div class="col-lg-2"><a href="{% url "blog:answer_new" question.group.pk question.pk %}">답변달기</a></div>
+                </div>
+            </div>
+            <div class="panel-body" style="color: black;">{{question.content}}</div>
+        </div>
+    </a>
+    {% empty %}
+    <div class="panel panel-default">
+        <div class="panel-body" style="color: black;">등록된 질문이 없습니다.</div>
+    </div>
+    {% endfor %}
+
+    <p></p><p></p>
+
+    <h2>My Answers</h2>
+
+    {% for answer in answer_list %}
+    <div class="panel panel-danger">
+        <div class="panel-heading" style="font-size: 20px;">
+            <div class="row">
+                <div class="col-lg-6">{{answer.author}} 님의 답변</div>
+                <div class="col-lg-2">{% if answer.author == user %}<a href="{% url "blog:answer_edit" answer.question.group.pk answer.question.pk answer.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>{% endif %}</div>
+                <div class="col-lg-2">{% if answer.author == user %}<a href="{% url "blog:answer_delete" answer.question.group.pk answer.question.pk answer.pk %}"><span class="glyphicon glyphicon-remove"></span></a>{% endif %}</div>
+            </div>
+        </div>
+        <div class="panel-body" style="color: black;">
+            {{answer.content}}
+        </div>
+        <div class="panel-footer" style="font-size: 20px; color: black;">
+            <div class="row">
+                <div class="col-lg-11" style="text-align: right;">
+                    {% if user not in answer.likes.all %}
+                    <a href="{% url 'blog:answer_like' answer.question.group.pk answer.question.pk answer.pk %}">좋아요</a>
+                    {% else %}
+                    <a href="{% url 'blog:answer_unlike' answer.question.group.pk answer.question.pk answer.pk %}">좋아요 취소</a>
+                    {% endif %}
+                </div>
+                <div class="col-lg-1" style="text-align: right;">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> {{answer.likes.count}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="panel panel-default">
+        <div class="panel-body" style="color: black;">작성한 답변이 없습니다.</div>
+    </div>
+    {% endfor %}
+
+</section>
+
+{% comment %}
+        <h3>내가 좋아하는 그룹</h3>
         {% for group in user.group_likes.all %}
             <a href={% url 'blog:group_detail' group.pk %}><li>{{ group.name }}</li></a>
         {% empty %}
@@ -40,4 +105,13 @@
         {% empty %}
             <li>좋아하는 답변이 없습니다.</li>
         {% endfor %}
+{% endcomment %}
+
 {% endblock %}
+
+
+{% block script %}
+    <script>
+        $("li .page-scroll").remove()
+    </script>
+{% endblock script %}

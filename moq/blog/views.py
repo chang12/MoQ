@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from blog.forms import GroupForm, QuestionForm, AnswerForm
 from blog.models import Group, Question, Answer
@@ -19,7 +20,7 @@ def group_list(request):
 
 def group_detail(request, group_pk):
     group = get_object_or_404(Group, pk=group_pk)
-    question_list = group.question_set.all()
+    question_list = group.question_set.all().order_by('-created_at')
     return render(request, 'blog/group_detail.html', {
         'group': group,
         'question_list': question_list,
@@ -51,9 +52,11 @@ def group_new(request):
             return redirect('blog:group_list')
 
     else:
+        guide = "New Class"
         form = GroupForm()
 
     return render(request, 'blog/form.html', {
+        'guide': guide,
         'form': form,
     })
 
@@ -69,9 +72,11 @@ def group_edit(request, group_pk):
                 return redirect('blog:group_detail', group_pk)
 
         else:
+            guide = "Edit Class"
             form = GroupForm(instance=group)
 
         return render(request, 'blog/form.html', {
+            'guide': guide,
             'form': form,
         })
 
@@ -99,7 +104,7 @@ def group_delete(request, group_pk):
 def question_detail(request, group_pk, question_pk):
     group = get_object_or_404(Group, pk=group_pk)
     question = get_object_or_404(Question, pk=question_pk)
-    answer_list = question.answer_set.all()
+    answer_list = question.answer_set.all().annotate(num_likes=Count('likes')).order_by('-num_likes')
     return render(request, 'blog/question_detail.html', {
         'group': group,
         'question': question,
@@ -134,9 +139,11 @@ def question_new(request, group_pk):
             return redirect('blog:group_detail', group_pk)
 
     else:
+        guide = "New Question"
         form = QuestionForm()
 
     return render(request, 'blog/form.html', {
+        'guide': guide,
         'form': form,
     })
 

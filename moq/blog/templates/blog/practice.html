@@ -2,74 +2,34 @@
 {% load staticfiles%}
 
 {% block content %}
-
-
-<section class="container content-section text-center">
-    <div>
-        <h2>클래스 목록</h2>
-        <p>현재 등록되어 있는 모든 클래스들의 리스트입니다</p>
-    </div>
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-            <div class="list-group">
-                <a href="#" class="list-group-item">
-                    <h4 class="list-group-item-heading" style="display: inline; float: left;">Group Title / Professor</h4>
-                    <h4 class="list-group-item-heading" style="float: right;">Follow</h4>
-                    <p class="list-group-item-text" style="text-align: left; clear: both;">Group Title / Professor</p>
-                </a>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-6 col-lg-offset-2">
-            <div class="list-group">
-                <div class="list-group-item" style="color: black;">
-                    <h4 class="list-group-item-heading" style="text-align: left;">Group Title / Professor</h4>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-2 col-lg-offset-8">
-            <div class="list-group">
-                <div class="list-group-item" style="color: black;">
-                    <h4 class="list-group-item-heading" style="text-align: right;">Follow</h4>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="list-group">
-        <div class="list-group-item" style="color: black;">
+<section class="container content-section">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="font-size: 20px;">
             <div class="row">
-                <div class="col-lg-6 col-lg-offset-2">
-                    <h4 class="list-group-item-heading" style="text-align: left;">Group Title / Professor</h4>
+                <div class="col-lg-6"><strong>{{question.title}}</strong></div>
+                <div class="col-lg-2">
+                    {% if question.author == user %}
+                    {# <a href="{% url "blog:question_edit" group.pk question.pk %}"> #}
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    {# </a> #}
+                    {% endif %}
                 </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="list-group">
-        <div class="list-group-item" style="color: black;">
-            <h4>연습</h4>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-            <div class="list-group">
-                <div class="list-group-item">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h4 class="list-group-item-heading" style="text-align: left; color: black;">Group Title / Professor</h4>
-                        </div>
-                        <div class="col-lg-6">
-                            <h4 class="list-group-item-heading" style="text-align: right; color: black;">Second</h4>
-                        </div>
-                    </div>
+                <div class="col-lg-2">
+                    {% if question.author == user %}
+                    {# <a href="{% url "blog:question_delete" group.pk question.pk %}"> #}
+                        <span class="glyphicon glyphicon-remove"></span>
+                    {# </a> #}
+                    {% endif %}
+                </div>
+                <div class="col-lg-2">
+                    {# <a href="{% url "blog:answer_new" group.pk question.pk %}"> #}
+                        답변달기
+                    {# </a> #}
                 </div>
             </div>
         </div>
+        <div class="panel-body" style="color: black;">{{question.content}}</div>
     </div>
 </section>
+
 {% endblock %}
