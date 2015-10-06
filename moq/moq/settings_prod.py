@@ -1,5 +1,6 @@
-from .settings import *
+from .settings import *  # noqa
 import os
+
 
 if 'X_SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ['X_SECRET_KEY']
