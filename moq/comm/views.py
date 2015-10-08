@@ -1,5 +1,6 @@
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, render
 from comm.forms import PostForm
+from comm.models import Post
 
 # Create your views here.
 
@@ -13,6 +14,9 @@ def index(request):
             response = HttpResponse("This response is for POST request\n")
 
     else:
-        response = HttpResponse("This response is for GET request\n")
+        post_list = Post.objects.all()
+        response = render(request, 'comm/index.html', {
+            'post_list': post_list,
+        })
 
     return response
