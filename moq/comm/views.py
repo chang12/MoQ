@@ -17,7 +17,7 @@ def index(request):
         form = PostForm()
         post_list = Post.objects.all()
 
-    return render(request, 'mysite/index.html', {
+    return render(request, 'comm/index.html', {
         'form': form,
         'post_list': post_list,
     })
