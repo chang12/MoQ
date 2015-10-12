@@ -1,10 +1,12 @@
 from django.shortcuts import HttpResponse, render
+from django.views.decorators.csrf import csrf_exempt
 from comm.forms import PostForm
 from comm.models import Post
 
 # Create your views here.
 
 
+@csrf_exempt
 def index(request):
 
     if request.method == "POST":
