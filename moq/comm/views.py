@@ -22,20 +22,36 @@ def index(request):
         'post_list': post_list,
     })
 
-
 # @csrf_exempt
 # def index(request):
-
 #     if request.method == "POST":
 #         form = PostForm(request.POST)
 #         if form.is_valid():
 #             form.save()
-#             response = HttpResponse("This response is for POST request\n")
-
+#             return HttpResponse("Thank you for your posting\n")
 #     else:
+#         form = PostForm()
 #         post_list = Post.objects.all()
-#         response = render(request, 'comm/index.html', {
-#             'post_list': post_list,
-#         })
 
-#     return response
+#     return render(request, 'comm/index.html', {
+#         'form': form,
+#         'post_list': post_list,
+#     })
+
+
+@csrf_exempt
+def index(request):
+
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            response = HttpResponse("This response is for POST request\n")
+
+    else:
+        post_list = Post.objects.all()
+        response = render(request, 'comm/index.html', {
+            'post_list': post_list,
+        })
+
+    return response

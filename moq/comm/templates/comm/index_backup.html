@@ -1,8 +1,0 @@
-<h1>Response for GET request</h1>
-{% for post in post_list%}
-    <h3>{{post.title}}</h3>
-    {{post.content|linebreaks}}
-    <hr/>
-{% empty %}
-    <h3>No post saved</h3>
-{% endfor%}
