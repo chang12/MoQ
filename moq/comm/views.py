@@ -6,6 +6,22 @@ from comm.models import Location, Post
 # Create your views here.
 
 
+@csrf_exempt
+def index(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Thank you for your posting\n")
+    else:
+        form = PostForm()
+        post_list = Post.objects.all()
+
+    return render(request, 'comm/index.html', {
+        'form': form,
+        'post_list': post_list,
+    })
+
 # @csrf_exempt
 # def index(request):
 #     if request.method == "POST":
