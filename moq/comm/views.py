@@ -1,7 +1,7 @@
 from django.shortcuts import HttpResponse, render
 from django.views.decorators.csrf import csrf_exempt
-from comm.forms import PostForm
-from comm.models import Post
+from comm.forms import LocationForm, PostForm
+from comm.models import Location, Post
 
 # Create your views here.
 
@@ -27,15 +27,16 @@ from comm.models import Post
 def index(request):
 
     if request.method == "POST":
-        form = PostForm(request.POST)
+        # form = PostForm(request.POST)
+        form = LocationForm(request.POST)
         if form.is_valid():
             form.save()
             response = HttpResponse("This response is for POST request\n")
 
     else:
-        post_list = Post.objects.all()
+        location_list = Location.objects.all()
         response = render(request, 'comm/index.html', {
-            'post_list': post_list,
+            'location_list': location_list,
         })
 
     return response
